@@ -9,6 +9,7 @@ import fs from 'fs'
  */
 const inputPath = process.argv[2];
 
+
 function transcribe(): Promise<string> {
   return new Promise((resolve, reject) => {
     /* 
