@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { exec } from 'child_process';
 import fs from 'fs'
 
@@ -23,7 +25,7 @@ function transcribe() {
     */
     exec('whisper input.wav --language Russian --fp16 False --model base', (error, stdout, stderr) => {
       if (error) return reject(stderr);
-      console.log('📝 Распознавание завершено', stdout);
+      console.log('📝 Распознавание завершено!_', stdout);
       const text = fs.readFileSync('./input.txt', 'utf-8');
       resolve(text.trim());
     });
@@ -31,7 +33,7 @@ function transcribe() {
 }
 
 async function main() {
-  await record(5);
+  await record(15);
   const text = await transcribe();
   console.log('📣 Ты сказал:', text);
 }
