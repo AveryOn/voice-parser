@@ -1,0 +1,35 @@
+import { exec } from 'child_process';
+import fs from 'fs'
+
+function record(duration = 5): Promise<void> {
+return new Promise((resolve, reject) => {
+    console.log('🎙 Запись началась...');
+    exec(`arecord -f cd -c 1 -r 16000 -d ${duration} input.wav`, (err) => {
+        if (err) {
+            console.error('❌ Ошибка записи:', err);
+            return reject(err); 
+        }
+        console.log('🎙 Запись завершена');
+        resolve();
+    });
+    });
+}
+
+function transcribe() {
+  return new Promise((resolve, reject) => {
+    exec('whisper input.wav --language Russian --fp16 False --model base', (error, stdout, stderr) => {
+      if (error) return reject(stderr);
+      console.log('📝 Распознавание завершено', stdout);
+      const text = fs.readFileSync('./input.txt', 'utf-8');
+      resolve(text.trim());
+    });
+  });
+}
+
+async function main() {
+  await record(5); // записываем 5 секунд
+  const text = await transcribe();
+  console.log('📣 Ты сказал:', text);
+}
+
+main();
