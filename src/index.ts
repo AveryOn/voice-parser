@@ -26,6 +26,11 @@ function transcribe() {
     exec('whisper input.wav --language Russian --fp16 False --model base', (error, stdout, stderr) => {
       if (error) return reject(stderr);
       console.log('📝 Распознавание завершено!_', stdout);
+      /* 
+        Тут важно выкинуть stdout наружу.
+        Это необходимо для голосового ассистента, он перехватывает stdout с этого процесса
+      */
+      console.log(stdout)
       const text = fs.readFileSync('./input.txt', 'utf-8');
       resolve(text.trim());
     });
