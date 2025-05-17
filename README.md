@@ -16,9 +16,11 @@ pip install -r requirements.txt
 ## Запуск
 
 ```bash
-
 # Запуск в разработке
 npm run dev
+```
 
+```bash
 # Запуск в проде
 npm run start
+```
