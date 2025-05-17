@@ -17,6 +17,10 @@ return new Promise((resolve, reject) => {
 
 function transcribe() {
   return new Promise((resolve, reject) => {
+    /* 
+      Whisper под капотом поздает одноименный файл input.txt. (на основе input.wav)
+      input.txt лежит текст извлеченный с аудио
+    */
     exec('whisper input.wav --language Russian --fp16 False --model base', (error, stdout, stderr) => {
       if (error) return reject(stderr);
       console.log('📝 Распознавание завершено', stdout);
