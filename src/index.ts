@@ -3,16 +3,11 @@
 import { exec } from 'child_process';
 import fs from 'fs'
 
-function record(duration = 5): Promise<boolean> {
-  return new Promise((resolve, reject) => {
-    exec(`arecord -f cd -c 1 -r 16000 -d ${duration} input.wav`, (err) => {
-      if (err) {
-        return reject(err);
-      }
-      resolve(true);
-    });
-  });
-}
+/**
+ * Полный путь к корню проекта voice-assistant
+ * путь до файла `input.wav`, который создается внутри ассистента
+ */
+const inputPath = process.argv[2];
 
 function transcribe(): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -20,7 +15,10 @@ function transcribe(): Promise<string> {
       Whisper под капотом поздает одноименный файл input.txt. (на основе input.wav)
       input.txt лежит текст извлеченный с аудио
     */
-    exec('whisper input.wav --language Russian --fp16 False --model base', (error, _, stderr) => {
+    if (!inputPath) {
+      return void process.exit(1)
+    }
+    exec(`whisper ${inputPath} --language Russian --fp16 False --model base`, (error, _, stderr) => {
       if (error)
         return reject(stderr);
 
@@ -31,7 +29,6 @@ function transcribe(): Promise<string> {
 }
 
 async function main() {
-  await record(15);
   const stdout: string = await transcribe();
   /* 
     Тут важно выкинуть stdout наружу через .log()
