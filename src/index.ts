@@ -4,14 +4,14 @@ import { exec } from 'child_process';
 import fs from 'fs'
 
 function record(duration = 5): Promise<boolean> {
-return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     exec(`arecord -f cd -c 1 -r 16000 -d ${duration} input.wav`, (err) => {
-        if (err) {
-            return reject(err); 
-        }
-        resolve(true);
+      if (err) {
+        return reject(err);
+      }
+      resolve(true);
     });
-    });
+  });
 }
 
 function transcribe(): Promise<string> {
@@ -21,7 +21,7 @@ function transcribe(): Promise<string> {
       input.txt лежит текст извлеченный с аудио
     */
     exec('whisper input.wav --language Russian --fp16 False --model base', (error, _, stderr) => {
-      if (error) 
+      if (error)
         return reject(stderr);
 
       const text = fs.readFileSync('./input.txt', 'utf-8');
