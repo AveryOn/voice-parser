@@ -27,7 +27,7 @@ function transcribe() {
 }
 
 async function main() {
-  await record(5); // записываем 5 секунд
+  await record(5);
   const text = await transcribe();
   console.log('📣 Ты сказал:', text);
 }

@@ -38,3 +38,4 @@ coverage/
 !ts*.json
 *.srt
 !requirements.txt
+!nodemon.json
